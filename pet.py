@@ -12,33 +12,32 @@ pygame.display.set_caption("Study Pet")
 clock = pygame.time.Clock()
 
 class Pet(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, type):
         super().__init__()
+        self.image = pygame.image.load(type).convert_alpha()
+        self.image = pygame.transform.smoothscale(self.image, (150, 150))
+        self.rect = self.image.get_rect(center = (width/2, height/2 - 100))
 
-class BlueCat(Pet):
-    def __init__(self, spawnpos):
-        super().__init__()
-        self.image = pygame.image.load("sprites/bluecat.png").convert_alpha()
-        self.iamge = pygame.transform.smoothscale(self.image, (100, 100))
-        self.rect = self.image.get_rect()
+
+def display_image(image, position):
+    img = pygame.image.load(image).convert_alpha()
+    img = pygame.transform.smoothscale(img, (150, 150))
+    img_rect = img.get_rect(center = position)
+    display.blit(img, img_rect)
+    return img_rect
+
+
         
 def game_loop():
     choosing = True
     study = False
     while choosing:
+        
         display.fill(white)
-        cat = pygame.image.load("sprites/bluecat.png").convert_alpha()
-        cat = pygame.transform.smoothscale(cat, (150, 150))
-        caterpillar = pygame.image.load("sprites/caterpillar.png").convert_alpha()
-        caterpillar = pygame.transform.smoothscale(caterpillar, (150,150))
-        dog = pygame.image.load("sprites/dog.png").convert_alpha()
-        dog = pygame.transform.smoothscale(dog, (150,150))
-        cat_rect = cat.get_rect(center = (200, 250))
-        caterpillar_rect = caterpillar.get_rect(center = (400, 250))
-        dog_rect = dog.get_rect(center = (600, 250))
-        display.blit(caterpillar, caterpillar_rect)
-        display.blit(dog, dog_rect)
-        display.blit(cat, cat_rect)
+        cat_rect = display_image("sprites/bluecat.png", (200, 250))
+        caterpillar_rect = display_image("sprites/caterpillar.png", (400, 250))
+        dog_rect = display_image("sprites/dog.png", (600, 250))
+        
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -49,20 +48,26 @@ def game_loop():
                 if cat_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
+                    chosen_pet = "sprites/bluecat.png"
                 elif caterpillar_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
+                    chosen_pet = "sprites/caterpillar.png"
                 elif dog_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
+                    chosen_pet  = "sprites/dog.png"
 
     while study:
+        display.fill(white)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+        pet = Pet(chosen_pet)
+        display.blit(pet.image, pet.rect)
         
-        display.fill(white)
+
         pygame.display.update()
 
 
