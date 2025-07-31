@@ -6,6 +6,8 @@ width = 800
 height = 600
 white = (255, 255, 255)
 black = (0,0,0)
+red = (255,0 ,0)
+green = (0, 255, 0)
 
 display =  pygame.display.set_mode((width, height))
 pygame.display.set_caption("Study Pet")
@@ -30,11 +32,24 @@ def display_image(image, position):
     display.blit(img, img_rect)
     return img_rect
 
+def make_btn(text, x, y, width, height, color, font_size):
+    btn_rect = pygame.Rect(x, y, width, height)
+    pygame.draw.rect(display, color, btn_rect)
+    font = pygame.font.Font('freesansbold.ttf', font_size)
+    mess_text = font.render(text, True, black)
+    txt_rect = mess_text.get_rect(center = btn_rect.center)
+    display.blit(mess_text, txt_rect)
+    return btn_rect
+
+
+
 
         
 def game_loop():
     choosing = True
     study = False
+    pet_image = None
+    startTimer = None
     while choosing:
         
         display.fill(white)
@@ -62,17 +77,41 @@ def game_loop():
                     choosing = False
                     study = True
                     chosen_pet  = "sprites/dog.png"
-
+    
+    pet_image = chosen_pet
     while study:
         display.fill(white)
+        
+        start_btn = make_btn("Start study", 200, 300, 150, 50, green, 20)
+          
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        pet = Pet(chosen_pet)
-        display.blit(pet.image, pet.rect)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_btn.collidepoint(event.pos):
+                    startTimer = pygame.time.get_ticks()
+             
+        if startTimer is not None:
+            ms = pygame.time.get_ticks() - startTimer
+            sec = ms // 1000
+            display_message(f"Time: {sec}", (20, 30), 15)
+            if pygame.time.get_ticks() - startTimer > 10000:
+                pet_image = "sprites/babycat.png"
+
+        
         
 
+
+        pet = Pet(pet_image)
+        display.blit(pet.image, pet.rect)
+
+
+
+        
+
+        
         pygame.display.update()
 
 
