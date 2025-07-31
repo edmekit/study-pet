@@ -113,8 +113,6 @@ def game_loop():
                     study = True
                     pet = Dog(0)
     
-    pet.level = 0
-    
     while study:
         display.fill(white)
         
