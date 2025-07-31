@@ -13,12 +13,51 @@ display =  pygame.display.set_mode((width, height))
 pygame.display.set_caption("Study Pet")
 clock = pygame.time.Clock()
 
-class Pet(pygame.sprite.Sprite):
-    def __init__(self, type):
+class Cat(pygame.sprite.Sprite):
+    def __init__(self, level):
         super().__init__()
-        self.image = pygame.image.load(type).convert_alpha()
-        self.image = pygame.transform.smoothscale(self.image, (150, 150))
-        self.rect = self.image.get_rect(center = (width/2, height/2 - 100))
+        self.level = level
+        self.evolve()
+        
+    def evolve(self):
+            self.stages = {
+            0: "sprites/bluecat.png",
+            1: "sprites/babycat.png"
+        }
+            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
+            self.image = pygame.transform.smoothscale(self.image, (150, 150))
+            self.rect = self.image.get_rect(center = (400, 250))
+
+class Caterpillar(pygame.sprite.Sprite):
+    def __init__(self, level):
+        super().__init__()
+        self.level = level
+        self.evolve()
+        
+    def evolve(self):
+            self.stages = {
+            0: "sprites/caterpillar.png",
+            1: "sprites/babycaterpillar.png"
+        }
+            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
+            self.image = pygame.transform.smoothscale(self.image, (150, 150))
+            self.rect = self.image.get_rect(center = (400, 250))
+
+class Dog(pygame.sprite.Sprite):
+    def __init__(self, level):
+        super().__init__()
+        self.level = level
+        self.evolve()
+        
+    def evolve(self):
+            self.stages = {
+            0: "sprites/dog.png",
+            1: "sprites/babydog.png"
+        }
+            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
+            self.image = pygame.transform.smoothscale(self.image, (150, 150))
+            self.rect = self.image.get_rect(center = (400, 250))
+        
 
 def display_message(text, pos, size):
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -40,11 +79,7 @@ def make_btn(text, x, y, width, height, color, font_size):
     txt_rect = mess_text.get_rect(center = btn_rect.center)
     display.blit(mess_text, txt_rect)
     return btn_rect
-
-
-
-
-        
+ 
 def game_loop():
     choosing = True
     study = False
@@ -68,21 +103,22 @@ def game_loop():
                 if cat_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
-                    chosen_pet = "sprites/bluecat.png"
+                    pet = Cat(0)
                 elif caterpillar_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
-                    chosen_pet = "sprites/caterpillar.png"
+                    pet = Caterpillar(0)
                 elif dog_rect.collidepoint(event.pos):
                     choosing = False
                     study = True
-                    chosen_pet  = "sprites/dog.png"
+                    pet = Dog(0)
     
-    pet_image = chosen_pet
+    pet.level = 0
+    
     while study:
         display.fill(white)
         
-        start_btn = make_btn("Start study", 200, 300, 150, 50, green, 20)
+        start_btn = make_btn("Start study", 200, 350, 150, 50, green, 20)
           
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,20 +134,12 @@ def game_loop():
             sec = ms // 1000
             display_message(f"Time: {sec}", (20, 30), 15)
             if pygame.time.get_ticks() - startTimer > 10000:
-                pet_image = "sprites/babycat.png"
+                pet.level = 1
+                pet.evolve()
 
-        
-        
-
-
-        pet = Pet(pet_image)
+              
         display.blit(pet.image, pet.rect)
 
-
-
-        
-
-        
         pygame.display.update()
 
 
