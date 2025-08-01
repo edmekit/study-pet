@@ -13,6 +13,10 @@ display =  pygame.display.set_mode((width, height))
 pygame.display.set_caption("Study Pet")
 clock = pygame.time.Clock()
 
+class Pet(pygame.sprite.Sprite):
+    def __init__(self, level):
+        self.level = level
+
 class Cat(pygame.sprite.Sprite):
     def __init__(self, level):
         super().__init__()
