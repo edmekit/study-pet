@@ -133,38 +133,34 @@ def game_loop():
             ms = pygame.time.get_ticks() - startTimer
             sec = ms // 1000
             display_message(f"Time: {sec}(s)", (20, 30), 15)
-            if not baby:
-                if sec > 10:
-                    pet.level_up(1)
-                    baby = True
-            if baby and not adult:
-                if sec > 20:
-                    pet.level_up(2)
-                    adult = True
-
-
-        while end_session:
-            display.fill(white)
-            display_message(f"You studied for {sec}(s) and your pet", (200, 60), 30)
-            display_message("has grew to this!", (270, 100), 30)
-            display.blit(pet.image, pet.rect)
-            
-            quit_btn = make_btn("Quit", 325, 400, 150, 50, red, 25)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if quit_btn.collidepoint(event.pos):
-                        pygame.quit()
-                        quit()
-
-            pygame.display.update()
-
-        display.blit(pet.image, pet.rect)
+            if sec >= 10 and pet.level == 0:
+                pet.level_up(1)
+            elif sec >= 20 and pet.level == 1:
+                pet.level_up(2)
         
+        display.blit(pet.image, pet.rect)
         pygame.display.update()
 
+
+
+    while end_session:
+        display.fill(white)
+        display_message(f"You studied for {sec}(s) and your pet", (200, 60), 30)
+        display_message("has grown to this!", (270, 100), 30)
+        display.blit(pet.image, pet.rect)
+        quit_btn = make_btn("Quit", 325, 400, 150, 50, red, 25)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if quit_btn.collidepoint(event.pos):
+                    pygame.quit()
+                    quit()
+
+            pygame.display.update()
+        
+   
 
 game_loop()
