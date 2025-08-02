@@ -32,6 +32,7 @@ class Cat(Pet):
         self.stages = {
             0: "sprites/bluecat.png",
             1: "sprites/babycat.png",
+            2: "sprites/adultcat.png"
         }
         self.evolve()
     
@@ -79,7 +80,7 @@ def game_loop():
 
     choosing = True
     study = False
-    pet_image = None
+    end_session = False
     startTimer = None
     baby = False
     adult = False
@@ -115,7 +116,7 @@ def game_loop():
         display.fill(white)
         
         start_btn = make_btn("Start study", 200, 350, 150, 50, green, 20)
-          
+        exit_btn = make_btn("End Session", 500, 350, 150, 50, red, 20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -124,7 +125,10 @@ def game_loop():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_btn.collidepoint(event.pos):
                     startTimer = pygame.time.get_ticks()
-             
+                if exit_btn.collidepoint(event.pos):
+                    study = False
+                    end_session = True
+  
         if startTimer is not None:
             ms = pygame.time.get_ticks() - startTimer
             sec = ms // 1000
@@ -133,10 +137,33 @@ def game_loop():
                 if sec > 10:
                     pet.level_up(1)
                     baby = True
+            if baby and not adult:
+                if sec > 20:
+                    pet.level_up(2)
+                    adult = True
 
-              
+
+        while end_session:
+            display.fill(white)
+            display_message(f"You studied for {sec}(s) and your pet", (200, 60), 30)
+            display_message("has grew to this!", (270, 100), 30)
+            display.blit(pet.image, pet.rect)
+            
+            quit_btn = make_btn("Quit", 325, 400, 150, 50, red, 25)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if quit_btn.collidepoint(event.pos):
+                        pygame.quit()
+                        quit()
+
+            pygame.display.update()
+
         display.blit(pet.image, pet.rect)
-
+        
         pygame.display.update()
 
 
