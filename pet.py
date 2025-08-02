@@ -133,9 +133,9 @@ def game_loop():
             ms = pygame.time.get_ticks() - startTimer
             sec = ms // 1000
             display_message(f"Time: {sec}(s)", (20, 30), 15)
-            if sec >= 10 and pet.level == 0:
+            if sec >= 1800 and pet.level == 0:
                 pet.level_up(1)
-            elif sec >= 20 and pet.level == 1:
+            elif sec >= 3600 and pet.level == 1:
                 pet.level_up(2)
         
         display.blit(pet.image, pet.rect)
@@ -159,8 +159,7 @@ def game_loop():
                     pygame.quit()
                     quit()
 
-            pygame.display.update()
+        pygame.display.update()
         
    
-
 game_loop()
