@@ -16,16 +16,15 @@ clock = pygame.time.Clock()
 class Pet(pygame.sprite.Sprite):
     def __init__(self, level):
         self.level = level
-        self.stages = {
-            0: "egg",
-            1: "baby",
-            2: "adult"
-        }
     
     def evolve(self):
         self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
         self.image = pygame.transform.smoothscale(self.image, (150, 150))
         self.rect = self.image.get_rect(center = (400, 250))
+
+    def level_up(self, new_level):
+        self.level = new_level
+        self.evolve()
 
 class Cat(Pet):
     def __init__(self, level):
@@ -82,6 +81,8 @@ def game_loop():
     study = False
     pet_image = None
     startTimer = None
+    baby = False
+    adult = False
     while choosing:
         
         display.fill(white)
@@ -128,9 +129,10 @@ def game_loop():
             ms = pygame.time.get_ticks() - startTimer
             sec = ms // 1000
             display_message(f"Time: {sec}(s)", (20, 30), 15)
-            if sec > 10:
-                pet.level = 1
-                pet.evolve()
+            if not baby:
+                if sec > 10:
+                    pet.level_up(1)
+                    baby = True
 
               
         display.blit(pet.image, pet.rect)
