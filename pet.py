@@ -16,52 +16,44 @@ clock = pygame.time.Clock()
 class Pet(pygame.sprite.Sprite):
     def __init__(self, level):
         self.level = level
-
-class Cat(pygame.sprite.Sprite):
-    def __init__(self, level):
-        super().__init__()
-        self.level = level
-        self.evolve()
-        
-    def evolve(self):
-            self.stages = {
-            0: "sprites/bluecat.png",
-            1: "sprites/babycat.png"
+        self.stages = {
+            0: "egg",
+            1: "baby",
+            2: "adult"
         }
-            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
-            self.image = pygame.transform.smoothscale(self.image, (150, 150))
-            self.rect = self.image.get_rect(center = (400, 250))
-
-class Caterpillar(pygame.sprite.Sprite):
-    def __init__(self, level):
-        super().__init__()
-        self.level = level
-        self.evolve()
-        
+    
     def evolve(self):
-            self.stages = {
+        self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
+        self.image = pygame.transform.smoothscale(self.image, (150, 150))
+        self.rect = self.image.get_rect(center = (400, 250))
+
+class Cat(Pet):
+    def __init__(self, level):
+        super().__init__(level)
+        self.stages = {
+            0: "sprites/bluecat.png",
+            1: "sprites/babycat.png",
+        }
+        self.evolve()
+    
+class Caterpillar(Pet):
+    def __init__(self, level):
+        super().__init__(level)
+        self.stages = {
             0: "sprites/caterpillar.png",
             1: "sprites/babycaterpillar.png"
         }
-            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
-            self.image = pygame.transform.smoothscale(self.image, (150, 150))
-            self.rect = self.image.get_rect(center = (400, 250))
-
-class Dog(pygame.sprite.Sprite):
-    def __init__(self, level):
-        super().__init__()
-        self.level = level
         self.evolve()
-        
-    def evolve(self):
-            self.stages = {
+
+class Dog(Pet):
+    def __init__(self, level):
+        super().__init__(level)
+        self.stages = {
             0: "sprites/dog.png",
             1: "sprites/babydog.png"
         }
-            self.image = pygame.image.load(self.stages[self.level]).convert_alpha()
-            self.image = pygame.transform.smoothscale(self.image, (150, 150))
-            self.rect = self.image.get_rect(center = (400, 250))
-        
+        self.evolve()
+
 
 def display_message(text, pos, size):
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -85,6 +77,7 @@ def make_btn(text, x, y, width, height, color, font_size):
     return btn_rect
  
 def game_loop():
+
     choosing = True
     study = False
     pet_image = None
@@ -134,8 +127,8 @@ def game_loop():
         if startTimer is not None:
             ms = pygame.time.get_ticks() - startTimer
             sec = ms // 1000
-            display_message(f"Time: {sec}", (20, 30), 15)
-            if pygame.time.get_ticks() - startTimer > 10000:
+            display_message(f"Time: {sec}(s)", (20, 30), 15)
+            if sec > 10:
                 pet.level = 1
                 pet.evolve()
 
