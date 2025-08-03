@@ -41,7 +41,8 @@ class Caterpillar(Pet):
         super().__init__(level)
         self.stages = {
             0: "sprites/caterpillar.png",
-            1: "sprites/babycaterpillar.png"
+            1: "sprites/babycaterpillar.png",
+            2: "sprites/adultcaterpillar.png"
         }
         self.evolve()
 
@@ -50,7 +51,8 @@ class Dog(Pet):
         super().__init__(level)
         self.stages = {
             0: "sprites/dog.png",
-            1: "sprites/babydog.png"
+            1: "sprites/babydog.png",
+            2: "sprites/adultdog.png"
         }
         self.evolve()
 
