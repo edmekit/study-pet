@@ -118,7 +118,7 @@ def game_loop():
         display.fill(white)
         
         start_btn = make_btn("Start study", 200, 350, 150, 50, green, 20)
-        exit_btn = make_btn("End Session", 500, 350, 150, 50, red, 20)
+        exit_btn = make_btn("End Session", 480, 350, 150, 50, red, 20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -147,7 +147,7 @@ def game_loop():
 
     while end_session:
         display.fill(white)
-        display_message(f"You studied for {sec}(s) and your pet", (200, 60), 30)
+        display_message(f"You studied for {sec}(s) and your pet", (180, 60), 30)
         display_message("has grown to this!", (270, 100), 30)
         display.blit(pet.image, pet.rect)
         quit_btn = make_btn("Quit", 325, 400, 150, 50, red, 25)
